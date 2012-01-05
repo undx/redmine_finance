@@ -1,0 +1,8 @@
+<h2><%= l(:financesheet_title)%></h2>
+
+<%= render :partial => 'form' %>
+
+<% content_for(:header_tags) do %>
+<%= stylesheet_link_tag "financesheet.css", :plugin => "redmine_finance", :media => 'all' %>
+<%= javascript_include_tag 'financesheet.js', :plugin => 'redmine_finance' %>
+<% end %>

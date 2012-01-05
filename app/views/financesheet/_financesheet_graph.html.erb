@@ -1,0 +1,12 @@
+<%= tag("embed", 
+		:width => "100%", 
+		:height => 300, 
+		:type => "image/svg+xml", 
+		:src => url_for(
+				:controller => 'financesheet_graphs', 
+				:action => 'budget_vs_actual_graph', 
+				:data_deliverables => data_deliverables, 
+				:data_budgets => data_budgets,
+				:view_by => view_by.to_sym
+		)
+	) %>

@@ -1,0 +1,19 @@
+<table class="list issues">
+  <thead>
+    <th width="8%"><%= l(:label_date) %></th>
+    <th width="10%"><%= l(:label_member) %></th>
+    <th width="15%"><%= l(:label_project) %></th>
+    <th width="25%"><%= l(:label_issue) %></th>
+    <th width="10%"><%= l(:label_issue_status) %></th>
+    <th width="20%"><%= l(:label_deliverable_name) %></th>
+    <th width="10%"><%= l(:financesheet_amout_buget) %>
+	<th width="10%"><%= l(:financesheet_amout_actual) %>
+    <%= Redmine::Hook.call_hook(:plugin_timesheet_views_timesheet_group_header, { }) %>
+  </thead>
+  <tbody>
+	<%= render :partial => "budget_entry", :collection =>  @min_budget_entries.select{ |item| item["_project"] == name }, :as => :_budget_entry %>
+	<%= render :partial => "deliverable_entry", :collection => entry[:logs] %>
+	<%= render :partial => "budget_entry", :collection =>  @max_budget_entries.select{ |item| item["_project"] == name }, :as => :_budget_entry %>
+  </tbody>
+</table>
+<br />

@@ -1,0 +1,5 @@
+<h2><%= link_to l(:label_deliverable_plural), :controller => 'deliverables', :action => 'index' %> &#187; <%=l(:label_deliverable_new)%></h2>
+
+<% form_for :deliverable, @deliverable, :url => { :action => 'new'}, :html => {:id => 'deliverable-form', :class => 'tabular new-deliverable-form'}, :builder => TabularFormBuilder do |f| %>
+<%= render :partial => 'form', :locals => { :f => f } %>
+<% end %>

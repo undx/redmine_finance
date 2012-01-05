@@ -1,0 +1,85 @@
+<% issue = issue_deliverable_entries[0] %>
+<% deliverable_entries = issue_deliverable_entries[1] %>
+<% unless issue.nil? %>
+
+<% 
+
+	if (@financesheet.view_by.to_sym == :Year )
+		__radical = deliverable_entries[0].invoiced_on.year
+		__radical_title = deliverable_entries[0].invoiced_on.year.to_s
+	else
+		if (@financesheet.view_by.to_sym == :Month )
+			__radical = deliverable_entries[0].invoiced_on.strftime("%Y%m")
+			__radical_title = l(deliverable_entries[0].invoiced_on.strftime("%B")) + " " + deliverable_entries[0].invoiced_on.strftime("%Y")
+		else
+			if (@financesheet.view_by.to_sym == :Week )
+				__radical = deliverable_entries[0].invoiced_on.strftime("%Y%W")
+				__radical_title =  l(:financesheet_week) + " " + deliverable_entries[0].invoiced_on.strftime("%W %Y")
+			end
+		end
+
+	end
+
+	__prefix =   issue.project.id.to_s
+
+	__b_radical =  issue.project.name.to_s + "~" + __radical.to_s
+
+%>
+<%  if( 
+		(!@total_by_period[__prefix  + "_" + __radical.to_s].nil? && @total_by_period[__prefix  + "_" + __radical.to_s] > -1  )	||
+		( @lineOk[__prefix  + "_" +  __radical.to_s].nil? )
+	)
+%>
+
+
+	<tr>
+		<td>&nbsp;</td>
+		<td align="left"><%= __radical_title %></td>
+		<td colspan="5">&nbsp;</td>
+		<td align="right"><%= number_to_currency(@financesheet.budgets_entries[__b_radical], :precision => @precision,:locale=>:fr) %></td>
+		<td align="right"><%= number_to_currency(@total_by_period[issue.project.name.to_s  + "_" +  __radical.to_s], :precision => @precision,:locale=>:fr) %></td>
+	</tr>
+    <% 
+		@total_by_period[__prefix  + "_" +  __radical.to_s] = -1
+		@lineOk[__prefix  + "_" +  __radical.to_s] = -1
+	%>
+  	<% end %>
+<%#-- GRAND TOTAL --#%>
+
+  <tr class="<%= cycle("odd", "even") %>">
+    <td align="center">
+      <%= toggle_issue_arrows(issue.id) %>
+    </td>
+    <td align="center">&nbsp;</td>
+    <td align="center">&nbsp;</td>
+	<td align="left"><%= issue.project.name %></td>
+	<td>
+      <div class="tooltip">
+        <%= link_to_issue issue %>
+        <span class="tip">
+          <%= render_issue_tooltip issue %>
+        </span>
+      </div>
+    </td>
+	<td align="left"><%=h issue.status %></td>
+	<td></td>
+	<td></td>
+    <td align="right"><strong><%= number_to_currency(displayed_deliverable_entries_for_issue(deliverable_entries), :precision => @precision,:locale=>:fr) %></strong></td>
+    <%= Redmine::Hook.call_hook(:plugin_redmine_finance_views_financesheet_deliverable_entry_sum, {:issue => issue, :deliverable_entries => deliverable_entries, :precision => @precision,:locale=>:fr }) %>
+  </tr>
+<% deliverable_entries.each do |deliverable_entry| %>
+  <%# TODO: Typo on hook %>
+  <tr class="<%= cycle("odd", "even") %> issue-deliverable-entry-<%= issue.id -%> hascontextmenu <%= call_hook(:plugin_redmine_finance_views_financesheet_deliverable_entry_row_class, {:deliverable_entry => deliverable_entry }) %> <%= call_hook(:plugin_redmine_finance_views_financesheets_deliverable_entry_row_class, {:deliverable_entry => deliverable_entry }) %>" style="display:none;">
+    <td align="center"></td>
+    <td align="left"><%= deliverable_entry.invoiced_on.strftime("%d")%> &nbsp;<%= l(deliverable_entry.invoiced_on.strftime("%B")) %> &nbsp;<%= deliverable_entry.invoiced_on.strftime("%Y")%></td>
+    <td align="left"><%= l(:field_author) %>:<br /><%= deliverable_entry.author.name %></td>
+    <td align="center"></td>
+    <td align="center"></td>
+	<td align="center"></td>
+	<td align="left"><%=link_to_deliverable deliverable_entry.deliverable, {:description => true, :truncate => 255} %></td>
+	<td></td>
+    <td align="right"><strong><%= number_to_currency(deliverable_entry.amount,:precision => @precision,:locale=>:fr) %></strong></td>
+    <%= Redmine::Hook.call_hook(:plugin_redmine_finance_views_financesheet_deliverable_entry, {:deliverable_entry => deliverable_entry, :precision => @precision,:locale=>:fr }) %>
+  </tr>
+<% end %>
+<% end %>

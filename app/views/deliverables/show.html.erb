@@ -1,0 +1,27 @@
+
+<h2><%= @deliverable.name %></h2>
+
+<p><strong><%=l(:field_amount)%> :</strong> <%= number_to_currency( @deliverable.amount, :precision => @precision, :locale=>:fr) %></p>
+<p></p>
+<p><strong><%=l(:field_ischangable)%> :</strong> <%= check_box_tag "ischangable", @deliverable.ischangable , @deliverable.ischangable, :disabled => true %></p>
+<p><strong><%=l(:field_validfrom)%> :</strong> <%= @deliverable.validfrom.strftime("%d/%m/%Y")%></p>
+<p><strong><%=l(:field_isactive)%> :</strong> <%= check_box_tag "isactive", @deliverable.isactive , @deliverable.isactive, :disabled => true %></p>
+<p></p>
+<fieldset class="box" id="deliverable_trackers" style="width:80%;">
+<legend><%=l(:label_tracker_plural)%></legend>
+<% @trackers.each do |tracker| %>
+    <label class="floating">
+    <%= check_box_tag 'deliverable[tracker_ids][]', tracker.id, @deliverable.trackers.include?(tracker), :disabled => true %>
+    <%= tracker %>
+    </label>
+<% end %>
+</fieldset>
+<p></p>
+<% if @deliverable.description? %>
+<p><strong><%=l(:field_description)%></strong></p>
+<hr>
+<div class="box" style="width:80%;">
+<%= textilizable @deliverable, :description %>
+</div>
+<hr>
+<%end%>

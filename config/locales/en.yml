@@ -1,0 +1,189 @@
+en:
+ project_module_finances: "Finance"
+ permission_view_deliverable: "View delivrables"
+ permission_manage_budget: "Manage budget"
+ permission_manage_issue_deliverables: "Add delivrable to request"
+ permission_view_issue_deliverables: "View delivrable in request"
+ permission_update_issue_deliverables: "Update amount of delivrable in request"
+ permission_report_finance: "View finance report"
+ 
+ label_deliverable_new: "Create Deliverables"
+ label_deliverable_plural: "Deliverables"
+ label_deliverable: "Deliverable"
+ label_amount: "Amount"
+ field_ischangable: "Is changeable"
+ field_validfrom: "Valid from"
+ field_isactive: "Is active"
+ ischangable: "Is changeable"
+ validfrom: "Valid from"
+ isactive: "Is active"
+ label_issue_deliverables: "Add deliverable to request"
+ label_issue_deliverables_name: "Name"
+ label_issue_deliverables_description: "Description"
+ label_issue_deliverables_amount: "Amount"
+ label_issue_deliverables_invoiced: "Invoiced On"
+ label_issue_deliverables_comments: "Comments"
+ label_issue_deliverables_delete: "Delete"
+ label_validfrom: "Valide from"
+ label_budget_new: "New budget"
+ label_budget_provision_new:  "Budget"
+ label_budget_provision_plural_new:  "Periodic budget"
+ label_budget_provision_plural_update: "Edit all"
+ label_budget_update: "Edit"
+ label_budget_plural: "Budget"
+ label_budget: "Budgets"
+ label_budget_period: "Period"
+ label_budgets_period: "Periods"
+ label_budget_amount: "Amount"
+ label_budgets_amount: "Amounts"
+ field_amount: "Field Amount"
+ error_can_not_create_budget: "Error, can't create new budget"
+ notice_successful_destroy: "Deleted"
+ isEqualDistribution: "Proportional"
+ my_projects: "My projects"
+ view_all: "View all projects"
+ January: "Januray"
+ February: "February"
+ March: "March"
+ April: "April"
+ May: "May"
+ June: "June"
+ July: "July"
+ August: "August"
+ September: "September"
+ October: "October"
+ November: "November"
+ December: "December"
+ 
+ rangeStart: "From" 
+ rangeEnd: "To"
+ button_next: "Next"
+ 
+ financesheet_title: "Finance"
+ financesheet_group_by: "Group by"
+ financesheet_project_label: "Project"
+ financesheet_users_label: "Create by"
+ financesheet_permalink: "Export in CSV"
+ financesheet_date_from_label: "From"
+ financesheet_date_to_label: "To"
+ financesheet_view_by: "View"
+ financesheet_showing_users: "Users "
+ financesheet_week: "Week"
+ financesheet_amout_buget: "Budget"
+ financesheet_amout_actual: "Actual amount"
+ label_deliverable_name: "Deliverable"
+ label_deliverable_description: "Deliverable description"
+ label_deliverable_comments: "Deliverable comments"
+ label_deliverable_amount: "Amount"
+ label_engaged_amount: "Actual amount"
+ finance: "Finance"
+ myprojects: "My projects"
+ label_finance: "Finance"
+ projects: "Projects"
+ project: "Project"
+ amount_in_currency: "Amount in €"
+ amount: "Amount"
+ budget_mass_new_help_title: "Prorotated budget"
+ budget_mass_new_help_content: "To pro-rate the budget on the months of the selected period, check « <strong> Proportional </strong> », otherwise click <strong> Next </strong> to create several customized monthly provisions " 
+ user: "User"
+ issue: "Request"
+ Year: "Year"
+ Month: "Month"
+ Week: "Week"
+ text_invoiced_date_must_be_setted: "All invoiced dates must be setted!"
+ notice_issue_updated: "Request has been updated"
+ notice_issue_deliverable_deleted: "deliverable has been disociated"
+ notes_issue_deliverable_added: "This deliverable has been associated to this request with a total of %{total}:"
+ notes_issue_deliverables_added: "This deliverable has been associated to this request with a total of %{total}:"
+ notes_issue_deliverable_deleted: "This deliverable has been deleted:"
+ field_tracker: "Project type"
+ label_tracker: "Project type"
+ label_tracker_plural: "Project types"
+ label_tracker_new: "New project type"
+ error_no_tracker_in_project: 'No project type is associated to this project. Please check the Project settings.'
+ error_can_not_delete_tracker: "This project type contains requests and can't be deleted."
+ error_workflow_copy_source: 'Please select a source project type or role'
+ error_workflow_copy_target: 'Please select target project type(s) and role(s)'
+ field_tracker: Project type
+ label_tracker: Project type
+ label_tracker_plural: Project types
+ label_tracker_new: New project type
+ label_display_used_statuses_only: Only display statuses that are used by this project type
+ text_workflow_edit: Select a role and a project type to edit the workflow
+ text_tracker_no_workflow: No workflow defined for this project type
+ text_no_configuration_data: "Roles, project types, request statuses and workflow have not been configured yet.\nIt is highly recommended to load the default configuration. You will be able to modify it once loaded."
+ cant_link_an_issue_with_a_descendant: "An request can not be linked to one of its subtasks"
+ notice_failed_to_save_issues: "Failed to save %{count} request(s) on %{total} selected: %{ids}."
+ notice_no_issue_selected: "No request is selected! Please, check the requests you want to edit."
+ notice_issue_done_ratios_updated: Request done ratios updated.
+ error_issue_not_found_in_project: 'The request was not found or does not belong to this project'
+ error_no_default_issue_status: 'No default request status is defined. Please check your configuration (Go to "Administration -> request statuses").'
+ error_can_not_reopen_issue_on_closed_version: 'An request assigned to a closed version can not be reopened'
+ error_unable_delete_issue_status: 'Unable to delete request status'
+ mail_subject_reminder: "%{count} request(s) due in the next %{days} days"
+ mail_body_reminder: "%{count} request(s) that are assigned to you are due in the next %{days} days:"
+ field_issue: Request
+ field_is_closed: Request closed
+ field_is_in_roadmap: Requests displayed in roadmap
+ field_issue_to: Related request
+ field_assignable: Requests can be assigned to this role
+ field_parent_issue: Parent task
+ setting_issues_export_limit: Requests export limit
+ setting_cross_project_issue_relations: Allow cross-project request relations
+ setting_issue_list_default_columns: Default columns displayed on the request list
+ setting_display_subprojects_issues: Display subprojects requests on main projects by default
+ setting_issue_done_ratio: Calculate the request done ratio with
+ setting_issue_done_ratio_issue_field: Use the request field
+ setting_issue_done_ratio_issue_status: Use the request status
+ permission_manage_categories: Manage request categories
+ permission_view_issues: View Requests
+ permission_add_issues: Add requests
+ permission_edit_issues: Edit requests
+ permission_manage_issue_relations: Manage request relations
+ permission_add_issue_notes: Add notes
+ permission_edit_issue_notes: Edit notes
+ permission_edit_own_issue_notes: Edit own notes
+ permission_move_issues: Move requests
+ permission_delete_issues: Delete requests
+ permission_view_issue_watchers: View watchers list
+ permission_add_issue_watchers: Add watchers
+ permission_delete_issue_watchers: Delete watchers
+ project_module_issue_tracking: Request tracking
+ label_issue: Request
+ label_issue_new: New request
+ label_issue_plural: Requests
+ label_issue_view_all: View all requests
+ label_issues_by: "Requests by %{value}"
+ label_issue_added: Request added
+ label_issue_updated: Request updated
+ label_issue_status: Request status
+ label_issue_status_plural: Request statuses
+ label_issue_category: Request category
+ label_issue_category_plural: Request categories
+ label_reported_issues: Reported requests
+ label_assigned_to_me_issues: Requests assigned to me
+ label_roadmap_no_issues: No requests for this version
+ label_issue_tracking: Request tracking
+ label_watched_issues: Watched requests
+ label_related_issues: Related requests
+ label_bulk_edit_selected_issues: Bulk edit selected requests
+ label_update_issue_done_ratios: Update request done ratios
+ text_are_you_sure_with_children: "Delete request and all child requests?"
+ text_tip_issue_begin_day: Request beginning this day
+ text_tip_issue_end_day: Request ending this day
+ text_tip_issue_begin_end_day: Request beginning and ending this day
+ text_issues_ref_in_commit_messages: Referencing and fixing requests in commit messages
+ text_issue_added: "Request %{id} has been reported by %{author}."
+ text_issue_updated: "Request %{id} has been updated by %{author}."
+ text_issue_category_destroy_question: "Some requests (%{count}) are assigned to this category. What do you want to do ?"
+ text_issue_category_reassign_to: Reassign requests to this category
+ text_issues_destroy_confirmation: 'Are you sure you want to delete the selected issue(s) ?'
+ text_reassign_time_entries: 'Reassign reported hours to this request:'
+ enumeration_issue_priorities: Request priorities
+ error_can_not_delete_deliverable: "Error: Deliverable cannot be deleted"
+ notice_successful_delete_delivrable: "Deliverable deleted successfully"
+  
+ 
+ 
+ 
+ 

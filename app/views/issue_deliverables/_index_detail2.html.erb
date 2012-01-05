@@ -1,0 +1,65 @@
+<div id="issue_deliverables">
+<% if @issue.deliverables.present? %>
+<table class="list">
+    <thead>
+		<tr>
+        	<th>#</th>
+			<th><%=l(:label_issue_deliverables_name)%></th>
+			<th><%=l(:label_issue_deliverables_amount)%></th>
+			<th><%=l(:label_issue_deliverables_invoiced)%></th>
+			<th><%=l(:label_issue_deliverables_comments)%></th>
+			<% if authorize_for('issue_deliverables', 'destroy') %>
+				<th><%=l(:button_delete)%></th>
+			<%end%>
+		</tr>
+	</thead>
+	<tbody>
+	<% tot=0 %>
+	<% @issue.deliverables.each do |issueDeliverable| %>
+	<% tot+= issueDeliverable.amount%>
+	<tr>
+	<td class="id"><%= issueDeliverable.id %></td>
+	<td class="deliverable">
+		<% if issueDeliverable.deliverable.description %>
+	      <div>
+	        <%= link_to issueDeliverable.deliverable.name, {}, :onclick => "Element.toggle('tooltip-#{issueDeliverable.deliverable.id}'); return false;" %>
+	        <span class="autoscroll" style="display:none;" id="tooltip-<%=issueDeliverable.deliverable.id%>">
+	          <%= textilizable issueDeliverable.deliverable, :description%>
+	        </span>
+	      </div>
+	    <% end %>
+</td>
+	<td class="amount"><%= h number_to_currency(issueDeliverable.amount, :precision => @precision,:locale=>:fr) %></td>
+	<td class="invoiced"><%= issueDeliverable.invoiced_on.strftime("%d/%m/%Y")%></td>
+	<td class="comments"><%= issueDeliverable.comments %></td>
+	<% if authorize_for('issue_deliverables', 'destroy') %>
+		<td class="delete"><%= 
+			link_to_remote(image_tag('delete.png'), 
+					{ :url => { :controller => 'issue_deliverables', 
+								:action => 'destroy', 
+								:issue_deliverables_id => @issueDeliverable, 
+								:id => issueDeliverable, 
+								:issue_id => @issue
+								},                                              
+	                  :method => :post
+	                }, 
+					:title => l(:label_issue_deliverables_delete))
+			 %></td>
+	<%end%>
+	</tr>
+	<% end %>
+	<td></td>
+	<td class="total"><b>Total</b></td>
+	<td align="total_amount"><b><%= number_to_currency(tot, :precision => @precision,:locale=>:fr)%></b></td>
+	<td></td>
+	</tbody>
+</table>
+<% end %>
+<% form_for (:deliverable, @issueDeliverables, 
+			:url => {:controller => 'issue_deliverables', :action => 'new', :issue_id => @issue },
+			:method => :post, 
+			:complete => "Form.Element.focus('issue_deliverables_id');",
+			:html => {:id => 'new-issue_deliverables-form', :style => (@issueDeliverables ? '' : 'display: none;')}) do |f| %>
+	<%= render :partial => 'issue_deliverables/form', :locals => {:f => f}%>
+<% end %>
+</div>

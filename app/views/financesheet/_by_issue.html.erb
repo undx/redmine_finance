@@ -1,0 +1,39 @@
+<%
+# name vaut project !!
+%>
+<table class="list issues">
+  <thead>
+    <th width="2%">&nbsp;</th>
+    <th width="8%"><%= l(:label_date) %></th>
+    <th width="10%"><%= l(:label_member) %></th>
+    <th width="10%"><%= l(:label_project) %></th>
+    <th width="25%"><%= l(:label_issue) %> / <%= l(:field_comments) %></th>
+	<th width="10%"><%= l(:label_issue_status) %></th>
+	<th width="20%"><%= l(:label_deliverable_name) %></th>
+    <th width="10%"><%= l(:financesheet_amout_buget) %>
+	<th width="10%"><%= l(:financesheet_amout_actual) %>
+    <%= Redmine::Hook.call_hook(:plugin_redmine_finance_views_financesheet_group_header, { }) %>
+  </thead>
+  <tbody>
+	<%= render :partial => "issue_budget_entry", :collection =>  @min_budget_entries.select{ |item| item["_project"] == name.name} , :as => :_budget_entry %>	
+    <%= render :partial => "issue_deliverable_entries", :collection => entry[:issues] %>
+	<%= render :partial => "issue_budget_entry", :collection =>  @max_budget_entries.select{ |item| item["_project"] == name.name} , :as => :_budget_entry  %>
+  </tbody>
+</table>
+<br />
+<script type="text/javascript">
+function toggleDeliverableEntries(id) {
+$$('.issue-deliverable-entry-' + id).each(function(ele) { ele.toggle();} )
+$$('.toggle-' + id).each(function(ele) { ele.toggle();} )
+}
+
+/*
+* Checks all the Deliverable Entries under issue_id
+*/
+function toggleDeliverableEntriesSelection(issue_id) {
+    $$('.issue-deliverable-entry-' + issue_id).each(function(ele) {
+        toggleIssuesSelection(ele);
+    });
+}
+
+</script>

@@ -1,0 +1,97 @@
+<%= error_messages_for 'issue_deliverables' %>
+
+<% if @issue.availableDeliverables.empty? %>
+	No more deliverable!
+<% else %>
+<% authorize_update = (authorize_for('issue_deliverables', 'update')) ? true : false %>
+<!--[form:issue_deliverables]-->
+<div class="autoscroll">
+<table class="list">
+    <thead>
+		<tr>
+        	<th><%= link_to image_tag('toggle_check.png'), {}, :onclick => 'toggleIssuesSelection(Element.up(this, "form")); return false;',
+                                                           :title => "#{l(:button_check_all)}/#{l(:button_uncheck_all)}" %>
+        	</th>
+			<th><%=l(:label_issue_deliverables_name)%></th>
+			<th><%=l(:label_issue_deliverables_amount)%></th>
+			<th><%=l(:label_issue_deliverables_invoiced)%></th>
+			<th><%=l(:label_issue_deliverables_comments)%></th>
+		</tr>
+	</thead>
+	<tbody>
+	<% for deliverable in @issue.availableDeliverables %>
+	  <tr class="<%= cycle("odd", "even") %>">
+		  <td class="checkbox hide-when-print"><%= check_box_tag("issue_deliverables[][deliverable_id]", 0, false, :id => "checkbox_" + deliverable.id.to_s , :onchange => "$('issue_deliverables_amount_" + deliverable.id.to_s + "').disabled= !#{deliverable.ischangable && authorize_update } ? !#{deliverable.ischangable && authorize_update } : !$('issue_deliverables_amount_" + deliverable.id.to_s + "').disabled; $('checkbox_" + deliverable.id.to_s + "').value= ($('checkbox_" + deliverable.id.to_s + "').checked == true ) ? " + deliverable.id.to_s + " : 0 ; return false;") %></td>
+		  <td class="name">
+				<% if deliverable.description %>
+			      <div>
+			        <%= link_to deliverable.name, {}, :onclick => "Element.toggle('tooltip-#{deliverable.id}'); return false;" %>
+			        <span class="autoscroll" style="display:none;" id="tooltip-<%=deliverable.id%>">
+			          <%= textilizable deliverable, :description%>
+			        </span>
+			      </div>
+			    <% end %>
+		  </td>
+		  <td align="center">
+				<%= hidden_field_tag 'issue_deliverables[][issue_id]', @issue.id %>
+				<%= hidden_field_tag 'issue_deliverables[][project_id]', @issue.project.id %>
+				<%= hidden_field_tag 'issue_deliverables[][amount]', deliverable.amount, :id => "val_issue_deliverables_amount_".concat(deliverable.id.to_s) %>
+				<%= text_field_tag 'issue_deliverables[][v_amount]',  number_to_currency(deliverable.amount, :precision => @precision,:locale=>:fr), :size => 6, :id => "issue_deliverables_amount_" + deliverable.id.to_s ,
+							 :onchange =>"$('val_issue_deliverables_amount_" + deliverable.id.to_s + "').value= this.value.replace(',','.').replace('€','').trim();",
+							 :disabled => !(deliverable.ischangable && authorize_update)
+				%>
+		  </td>
+		  <td align="center">
+			<%= text_field_tag 'issue_deliverables[][invoiced_on]', '', :size => 10 , :id => "invoiced_on_" + deliverable.id.to_s %><%= calendar_for("invoiced_on_" + deliverable.id.to_s) %>
+		  </td>
+		  <td align="center"><%= text_field_tag 'issue_deliverables[][comments]', '', :size => 30, :id => "comments_" + deliverable.id.to_s  %></td>	
+ 	  </tr>
+	<% end %>
+	<tr>
+		<td colspan="5">&nbsp;</td>
+	</tr>
+	<tr>
+		<td colspan="5">
+			
+			<%= submit_tag l(:button_add), :onclick => "return validateFields()" %>
+			<%= toggle_link l(:button_cancel), 'new-issue_deliverables-form'%>
+		</td>
+	</tr>
+
+	</tbody>
+</table>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+function validateFields(){
+	boxes = $$('form#new-issue_deliverables-form  .checkbox input');
+	
+	for(item in boxes){
+		if(boxes[item].checked == true){
+			invoicedField = $('invoiced_on_' + boxes[item].value);
+			if(invoicedField.value == '' ){
+				alert('<%= l(:text_invoiced_date_must_be_setted)%>');
+				invoicedField.focus();
+				
+				return false;
+			}
+		}
+
+	}
+
+	fillEmptyDeliverableId();
+}
+function fillEmptyDeliverableId(){
+	boxes = $$('form#new-issue_deliverables-form  .checkbox input');
+	boxes.each(
+		function(item)
+            {
+                if(item.checked == false) { item.checked= true; item.value=0;}
+
+            }
+		);
+}
+//]]>
+</script>
+<% end%>
+<!--[eoform:issue_deliverables]-->

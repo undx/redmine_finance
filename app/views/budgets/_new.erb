@@ -1,0 +1,11 @@
+<%= error_messages_for 'budget_new' %>
+<div class="box">
+<!--[form:budget_new]-->
+
+<p><label for="Amount"><%=l(:field_title)%> <span class="required">*</span></label>
+<%= text_field 'budget', 'amount', :size => 60 %></p>
+
+<p><label for="document_description"><%=l(:field_description)%></label>
+<%= text_area 'budget', 'period', :cols => 60, :rows => 15, :class => 'wiki-edit' %></p>
+<!--[eoform:budget_new]-->
+</div>

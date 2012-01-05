@@ -1,0 +1,67 @@
+<%= error_messages_for 'budget' %>
+
+<h2><%= link_to l(:label_budget_plural), :controller => 'budgets', :action => 'index', :id => @project %> &#187; <%=l(:label_budget_new)%></h2>
+
+<% form_for :budget, @budget, 
+		:url => { :action => 'mass_new', :project_id => @projet },
+		:controller => 'budgets',
+		:method => :post ,
+		:builder => TabularFormBuilder  do %>
+
+	<%= hidden_field_tag 'project_id', @project.id %>
+	
+	<% if @step == 'STEP_SHOW_DATE_RANGE' %>
+		<%= hidden_field_tag 'step', 'STEP_SHOW_MASS_FORM' %>
+		<div style="width:60%;">
+			<p class="nodata" style="text-align: left;">
+			<span id="admin-menu"><a href="#" class="info" style="text-decoration:none;"><%= l(:budget_mass_new_help_title) %></a></span>
+			<br/>
+			<br/>
+			<span><%= l(:budget_mass_new_help_content) %></span>
+			</p>
+		</div>
+		
+		<p><%=label_tag l(:rangeStart) %>&nbsp;<%= text_field_tag :rangeStart,'', :size => 10 %><%= calendar_for('rangeStart') %></p>
+		<p><%=label_tag l(:rangeEnd) %>&nbsp;<%= text_field_tag :rangeEnd,'', :size => 10%><%= calendar_for('rangeEnd') %></p>
+		<p></p>
+		<p>
+			<%=label_tag l(:isEqualDistribution) %>&nbsp; <%= check_box_tag("isEqualDistribution", 'distribute', false, :id => 'isEqualDistribution', :onchange => "if ($('isEqualDistribution').checked){ $('cellAmout').show(); $('amount').disabled = false; }else{ $('cellAmout').hide();  $('amount').disabled = true;}") %>
+			<div id="cellAmout" style="display:none"><%=label_tag l(:label_budget_amount) %>&nbsp;<%= text_field_tag :amount,'', :size => 10, :id => 'amount' %></div>
+		<p>
+			<%= submit_tag l(:button_next) %>
+		</p>
+	<% end %>
+	<%   if @step == 'STEP_SHOW_MASS_FORM' %>
+		<%= hidden_field_tag 'step', 'STEP_SAVE_MASS_FORM' %>
+		<div style="float:left;">
+		<!--[form:budget_mass_new]-->
+		<table class="list">
+			 <thead><tr>
+			  <th><%=l(:label_budgets_amount)%>/<%=l(:label_budgets_period)%></th>
+			  </tr>
+			</thead>
+	  		<tbody>
+			<% for month in  @monthsList%>
+			  <tr class="<%= cycle("odd", "even") %>">
+			  <td class="center">
+					<%= hidden_field_tag 'budgets[][project_id]', @project.id %>
+					<%= text_field_tag 'budgets[][amount]', '', :size => 6, :value => @distributedAmount %>&nbsp;<%= date_select("budgets", "][date", 
+								:start_year => Date.today.year - 1, 
+								:use_month_numbers => false,
+								:discard_day => true, 
+								:include_blank => false,
+								:default => {:year => month.year, :month => month.month,  :day => month.day }
+				) %>
+			  </td>
+			  </tr>
+			  <% end %>
+			  </tbody>
+			</table>
+			<p></p>
+			<p>
+				<%= submit_tag l(:button_add) %>
+			</p>
+		<!--[eoform:budget_mass_new]-->
+		</div>
+	<% end %>
+<% end %>

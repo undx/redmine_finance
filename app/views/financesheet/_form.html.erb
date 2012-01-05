@@ -1,0 +1,56 @@
+<div id="financesheet-form">
+<fieldset>
+<% form_for :financesheet, :url =>{:action => 'report'}, :html => {:id => 'financesheet_report'}, :remote => true do |f| %>
+
+<p id="date-options">
+  <label><%= l(:label_date)%>:</label><br />
+  <%= radio_button_tag 'financesheet[period_type]', '1', @financesheet.period_type == Financesheet::ValidPeriodType[:default] %>
+  <%= select_tag 'financesheet[period]', options_for_period_select((params[:financesheet].nil? ? nil : params[:financesheet][:period])),
+                           :onfocus => '$("financesheet_period_type_1").checked = true;' %>
+  <br /><br />
+
+  <%= radio_button_tag 'financesheet[period_type]', '2', @financesheet.period_type == Financesheet::ValidPeriodType[:free_period] %>
+  <span onclick="$('financesheet_period_type_2').checked = true;">
+    <label for="financesheet_date_from"><%= l(:financesheet_date_from_label)%>:</label><br />
+    <%= f.text_field "date_from", :size => 10 %><%= calendar_for('financesheet_date_from') %><br />
+
+    <label for="financesheet_date_to"><%= l(:financesheet_date_to_label)%>:</label><br />
+    <%= f.text_field "date_to", :size => 10 %><%= calendar_for('financesheet_date_to') %><br /><br />
+  </span>
+</p>
+
+<p>
+  <label for="financesheet_view_by"><%= l(:financesheet_view_by) %>:</label><br />
+  <%= select_tag("financesheet[view_by]", options_for_select(Financesheet::ValidViewOptions.invert, @financesheet.view_by)) %>
+</p>
+
+<p>
+  <label for="financesheet_sort"><%= l(:financesheet_group_by) %>:</label><br />
+  <%= select_tag("financesheet[sort]", options_for_select(Financesheet::ValidSortOptions.invert, @financesheet.sort)) %>
+</p>
+
+<p>
+  <label for="financesheet_projects_" class="select_all"><%= l(:financesheet_project_label)%>:</label><br />
+  <%= select_tag 'financesheet[projects][]', project_options(@financesheet), { :multiple => true, :size => @list_size} %>
+</p>
+
+
+<p>
+  <label for="financesheet_users_" class="select_all"><%= l(:financesheet_users_label)%>:</label><br />
+  <%= select_tag 'financesheet[users][]', user_options(@financesheet), { :multiple => true, :size => @list_size} %>
+</p>
+
+<%# TODO: Typo on hook %>
+<%= call_hook(:plugin_financesheet_view_financesheet_form, { :financesheet => @financesheet, :params => params, :list_size => @list_size }) %>
+<%= call_hook(:plugin_financesheet_views_financesheet_form, { :financesheet => @financesheet, :params => params, :list_size => @list_size }) %>
+
+<div class="clear"></div>
+
+<%= f.hidden_field "view_type" %>
+
+<%= submit_tag l(:button_apply),:class => 'button-small' -%>
+
+<% end %>
+<%= button_to(l(:button_reset), {:controller => 'financesheet', :action => 'reset'}, :method => 'delete') %>
+</fieldset>
+</div>

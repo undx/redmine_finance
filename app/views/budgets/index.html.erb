@@ -1,0 +1,52 @@
+<% html_title(l(:label_budget_plural)) -%>
+
+<div class="contextual">
+<% if (authorize_for('budgets', 'new') || User.current.admin? ) %>
+	<%= link_to l(:label_budget_provision_new), {:action => 'new', :id => @project}, :class => 'icon icon-add' %>
+<% end %>
+<% if (authorize_for('budgets', 'mass_new') || User.current.admin? ) %>
+	<%= link_to l(:label_budget_provision_plural_new), {:action => 'mass_new', :id => @project}, :class => 'icon icon-add' %>
+<% end %>
+<% if (authorize_for('budgets', 'mass_update') || User.current.admin? ) %> 
+	<%= link_to l(:label_budget_provision_plural_update), {:action => 'mass_update', :id => @project}, :class => 'icon icon-edit' %>
+<% end %>
+</div>
+
+<h2><%=l(:label_budget_plural)%> &#187; <%= @project %></h2>
+
+<% if !@budgets.empty? %>
+	<table class="list">
+	  <thead><tr>
+		<th><%=l(:label_budgets_period)%></th>
+		<th><%=l(:label_budget_amount)%></th>
+	    <% if authorize_for('budgets', 'edit') %><th><%=l(:button_update)%></th><% end %>
+		<% if authorize_for('budgets', 'destroy') %><th><%=l(:button_delete)%></th><% end %>	
+	  </tr></thead>
+	  <tbody>
+	<% for budget in @budgets %>
+	  <tr class="<%= cycle("odd", "even") %>">
+	  <td class="center"><%= l(budget.period.strftime("%B")) %> <%=budget.period.strftime("%Y") %></td>
+	  <td class="center right"><%= h number_to_currency(budget.amount, :precision => @precision, :locale=>:fr) %></td>
+	  <% if authorize_for('budgets', 'edit') || User.current.admin?  %>
+			<td class="center">
+			    <%= link_to (l(:button_update),  {:action => 'edit', :budget_edit => budget, :id => @project} ,
+			 	:controller => 'budgets',
+				:class => 'icon icon-edit')  %>
+			 </td>
+	  <% end %>
+	  <% if authorize_for('budgets', 'destroy') || User.current.admin? %>
+		  <td class="center">
+		    <%= link_to(l(:button_delete), { :action => 'destroy',:budget_destroy => budget,:id => @project},
+			 	:controller => 'budgets',
+				:method => :post,
+				:confirm => l(:text_are_you_sure),
+				:class => 'icon icon-del')  %>
+		  </td>
+	  <% end %>	  
+	  </tr>
+	<% end %>
+	  </tbody>
+	</table>
+<% else %>
+	<p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

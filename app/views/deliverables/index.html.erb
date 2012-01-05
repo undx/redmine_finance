@@ -1,0 +1,37 @@
+<div class="contextual">
+	<%= link_to l(:label_deliverable_new), {:action => 'new'}, :class => 'icon icon-add' %>
+</div>
+<h2><%= l(:label_deliverable_plural)%></h2>
+<table class="list">
+	<thead>
+		<tr>
+			<th><%= l(:label_deliverable)%></th>
+			<th><%= l(:label_amount)%></th>
+			<th><%= l(:label_validfrom)%></th>
+			<th></th>
+			<th><%= l(:button_update)%></th>
+			<th><%= l(:button_delete)%></th>
+		</tr>
+	</thead>
+	<tbody>
+		<% for deliverable in @deliverables %>
+		<tr class="<%= cycle("odd", "even") %>">
+			<td class="name"><%= content_tag('span', link_to(deliverable.name, :action => 'edit', :id => deliverable)) %></td>
+			<td align="center"><%= number_to_currency(deliverable.amount, :precision => @precision, :locale=>:fr) %></td>
+			<td align="center"><%= deliverable.validfrom.strftime("%d") +" "+l(deliverable.validfrom.strftime("%B")) +" "+ deliverable.validfrom.strftime("%Y")  %></td>
+			<td style="width:15%;"><%= reorder_links('deliverable', {:action => 'update', :id => deliverable}) %></td>
+			<td class="center"> <%= link_to (l(:button_update),  {:action => 'edit', :deliverable_edit => deliverable, :id => deliverable} ,
+			:controller => 'budgets',
+			:class => 'icon icon-edit')  %></td>
+			<td class="center"> <%= link_to(l(:button_delete), { :action => 'destroy', :id => deliverable },
+			:method => :post,
+			:confirm => l(:text_are_you_sure),
+			:class => 'icon icon-del')  %></td>
+		</tr>
+		<% end %>
+	</tbody>
+</table>
+<p class="pagination">
+	<%= pagination_links_full @deliverable_pages %>
+</p>
+<% html_title(l(:label_deliverable_plural)) -%>

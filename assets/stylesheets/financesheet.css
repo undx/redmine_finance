@@ -1,0 +1,18 @@
+div#financesheet-form p { padding:0px 10px; float:left; }
+.icon-financesheet { background-image: url(../images/csv.png); }
+
+#date-options { margin-left: 10px; }
+#date-options input[type='radio'] { margin-left: -20px; }
+#financesheet-form .button-to div {display:inline; }
+
+/*background-color: #FFEBC1;
+    border: 2px solid #FDBF3B;
+    */
+   
+#deliverable_entries table.list thead th,  #deliverable_entries table.list tbody td {
+    border-color: #D7D7D7 #D7D7D7 #999999;
+    border-style: solid;
+    border-width: 1px;
+}
+
+#admin-menu a.deliverables { background-image: url(../images/csv.png); }

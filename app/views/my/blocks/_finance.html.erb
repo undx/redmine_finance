@@ -1,0 +1,41 @@
+<%
+	currentUser=User.current;
+  	sql =  " select p.id as project_id, p.name as project_name , sum(budgets.amount) as budget_amount,"
+	sql << "(select sum(issue_deliverables.amount) from issue_deliverables where project_id=p.id) as deliverable_amount"
+    sql << " from projects as p"
+    sql << " inner join members on members.project_id=p.id"
+	sql << " inner join users on members.user_id=users.id"
+	sql << " left join budgets on p.id=budgets.project_id"
+	sql << " where members.user_id = #{User.current.id}"
+	sql << " and p.status = 1" 
+	sql << " group by p.id"
+	sql << " order by p.created_on DESC"
+	sql << " limit 5"
+    @projects = ActiveRecord::Base.connection.select_all(sql)
+%>
+
+<h3><%=l(:label_finance)%></h3>
+
+<% if !@projects.empty? %>
+	<table class="list">
+	  <thead><tr>
+		<th><%=l(:label_project_latest)%></th>
+		<th><%=l(:label_budget_plural)%></th>
+		<th><%=l(:label_deliverable_plural)%></th>
+	  </tr></thead>
+	  <tbody>
+	<% for project in @projects %>
+	  <tr class="<%= cycle("odd", "even") %>">
+	  <td class="center"><%= link_to(project["project_name"], 
+								{:controller => "financesheet", 
+								:action => "report"
+								}) %></td>
+	  <td class="center"><%= project["budget_amount"] %></td>
+	  <td class="center"><%= project["deliverable_amount"] %></td>
+	  </tr>
+	<% end %>
+	  </tbody>
+	</table>
+<% else %>
+	<p class="nodata"><%= l(:label_no_data) %></p>
+<% end %>

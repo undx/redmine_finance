@@ -1,0 +1,38 @@
+<%    
+	#projects = User.current.memberships.collect {|m| m.project if m.roles.each {|role| role.allowed_to?(:view_issues)}}.sort{|p| p.created_on}
+	currentUser=User.current;
+  	sql =  " select p.*"
+    sql << " from projects as p"
+    sql << " inner join members on members.project_id=p.id"
+	sql << " inner join users on members.user_id=users.id"
+    sql << " where members.user_id = #{User.current.id}"
+	sql << " and p.status = 1" 
+	sql << " order by p.created_on DESC"
+	sql << " limit 5"
+    @projects = ActiveRecord::Base.connection.select_all(sql)
+%>
+
+<h3><%= l(:my_projects) %></h3>
+<% if @projects.empty? %>
+    <p class="nodata"><%=l(:label_no_data)%></p>
+<% else %>
+    <div class="small">
+		<ul>       
+ 		<% for project in @projects %>
+		 
+			<li>
+			<%= link_to (project["name"], :controller => "issues", :action => "index", :project_id => project["identifier"]) %> (<%= format_time(project["created_on"]) %>)
+			<%= textilizable project["description"] %>
+			</li>
+
+		<% end %>
+    	
+		</ul>
+    </div>
+<% end %> 
+<div style="text-align:right;">
+	 <%= link_to(
+				l(:view_all),
+				:controller => "projects", :action => "index"
+				) %>
+</div>

@@ -1,0 +1,7 @@
+<tr class="financesheet_group">
+	<td>&nbsp;</td>
+	<td align="left"><%= _budget_entry["date"]%></td>
+	<td colspan="5">&nbsp;</td>
+	<td align="right"><%= number_to_currency(_budget_entry["budget"], :precision => @precision,:locale=>:fr) %></td>
+	<td align="center"></td>
+</tr>

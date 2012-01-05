@@ -1,0 +1,11 @@
+<hr/>
+<div class="contextual">
+<% if authorize_for('issue_deliverables', 'new') %>
+  <%= toggle_link l(:button_add), 'new-issue_deliverables-form', {:focus => 'issue_deliverables_id'} %>
+<% end %>
+</div>
+
+<p><strong><%=l(:label_issue_deliverables)%></strong></p>
+
+<%= render :partial => 'issue_deliverables/index_detail', :locals => { :issue => @issue} %>
+

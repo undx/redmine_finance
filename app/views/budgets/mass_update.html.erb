@@ -1,0 +1,45 @@
+<%= error_messages_for 'budget' %>
+
+<h2><%= link_to l(:label_budget_plural), :controller => 'budgets', :action => 'index', :id => @project %> &#187; <%=l(:label_budget_provision_plural_update)%></h2>
+
+<% form_for :budget, @budget, 
+		:url => { :action => 'mass_update', :project_id => @projet },
+		:controller => 'budgets',
+		:method => :post ,
+		:builder => TabularFormBuilder  do %>
+
+	<%= hidden_field_tag 'project_id', @project.id %>
+	
+	
+		<div style="float:left;">
+		<!--[form:budget_mass_new]-->
+		<table class="list">
+			 <thead><tr>
+			  <th><%=l(:label_budgets_amount)%>/<%=l(:label_budgets_period)%></th>
+			  </tr>
+			</thead>
+	  		<tbody>
+			<% for _budget in  @__budgets %>
+			  <tr class="<%= cycle("odd", "even") %>">
+			  <td class="center">
+					<%= hidden_field_tag 'budgets[][id]', _budget.id %>
+					<%= hidden_field_tag 'budgets[][project_id]', _budget.project.id %>
+					<%= text_field_tag 'budgets[][amount]', _budget.amount, :size => 6 %>&nbsp;<%= date_select("budgets", "][date", 
+								:start_year => Date.today.year - 1, 
+								:use_month_numbers => false,
+								:discard_day => true, 
+								:include_blank => false,
+								:default => {:year => _budget.period.year, :month => _budget.period.month,  :day => _budget.period.day }
+				) %>
+			  </td>
+			  </tr>
+			  <% end %>
+			  </tbody>
+			</table>
+			<p></p>
+			<p>
+				<%= submit_tag l(:button_update) %>
+			</p>
+		<!--[eoform:budget_mass_new]-->
+		</div>
+<%end%>

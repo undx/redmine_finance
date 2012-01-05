@@ -1,0 +1,5 @@
+<h2><%= l(:label_engaged_amount) %></h2>
+
+<% @entries.each do |entryname,entry| -%>
+<%= render :partial => 'project_financesheet', :locals => {:entry => entry, :name => entryname} %>
+<% end -%>

@@ -1,0 +1,72 @@
+<%#-- TOTAL BY Period --#%>
+
+	<% 
+
+		if (@financesheet.view_by.to_sym == :Year )
+			__radical = deliverable_entry.invoiced_on.year
+			__radical_title = deliverable_entry.invoiced_on.year.to_s
+		else
+			if (@financesheet.view_by.to_sym == :Month )
+				__radical = deliverable_entry.invoiced_on.strftime("%Y%m")
+				__radical_title = l(deliverable_entry.invoiced_on.strftime("%B")) + " " + deliverable_entry.invoiced_on.strftime("%Y")
+			else
+				if (@financesheet.view_by.to_sym == :Week )
+					__radical = deliverable_entry.invoiced_on.strftime("%Y%W")
+					__radical_title =  l(:financesheet_week) + " " + deliverable_entry.invoiced_on.strftime("%W %Y")
+				end
+			end
+	
+		end
+
+		__b_radical = ""
+
+		if (@financesheet.sort == :user)
+			__prefix =   deliverable_entry.author.id.to_s
+		else
+			if deliverable_entry.project.parent.nil?
+				__prefix =   deliverable_entry.project.to_s
+			else
+				__prefix =   deliverable_entry.project.parent.name + ' / ' + deliverable_entry.project.name
+			end
+			__b_radical = __prefix + "~" + __radical.to_s
+		end
+
+	%>
+	<%  if( 
+			(!@total_by_period[__prefix  + "_" + __radical.to_s].nil? && @total_by_period[__prefix  + "_" + __radical.to_s] > -1  )	||
+			( @lineOk[__prefix  + "_" +  __radical.to_s].nil? )
+		)
+	%>
+	<tr>
+		<td align="left"><%= __radical_title %></td>
+		<td colspan="5">&nbsp;</td>
+		<td align="right"><%= number_to_currency(@financesheet.budgets_entries[__b_radical], :precision => @precision, :locale=>:fr) %></td>
+		<td align="right"><%= number_to_currency(@total_by_period[__prefix  + "_" +  __radical.to_s], :precision => @precision, :locale=>:fr) %></td>
+	</tr>
+    <% 
+		@total_by_period[__prefix  + "_" +  __radical.to_s] = -1
+		@lineOk[__prefix  + "_" +  __radical.to_s] = -1
+	%>
+  	<% end %>
+<%#-- / TOTAL By Period--#%>
+<%# TODO: Typo on hook %>
+    <tr id="deliverable_entry_<%= deliverable_entry.id %>" class="deliverable_entry <%= cycle("odd", "even") %> hascontextmenu <%= call_hook(:plugin_redmine_finance_view_financesheet_deliverable_entry_row_class, {:deliverable_entry => deliverable_entry }) %> <%= call_hook(:plugin_redmine_finance_view_financesheet_deliverable_entry_row_class, {:deliverable_entry => deliverable_entry }) %>">
+    <td align="left"><%= format_date(deliverable_entry.invoiced_on) %></td>
+    <td align="left"><%= deliverable_entry.author.name %></td>
+    <td align="left"><%= deliverable_entry.project.name %></td>
+    <td align="left">
+      <% if deliverable_entry.issue %>
+      <div class="tooltip">
+        <%= link_to_issue deliverable_entry.issue %>
+        <span class="tip">
+          <%= render_issue_tooltip deliverable_entry.issue %>
+        </span>
+      </div>
+      <% end %>
+    </td>
+    <td align="left"><%=deliverable_entry.issue.status %></td>
+	<td align="left"><%=link_to_deliverable deliverable_entry.deliverable, {:description => true, :truncate => 255} %></td>
+	<td>&nbsp;</td>
+    <td align="right"><strong><%= number_to_currency(deliverable_entry.amount, :precision => @precision, :locale=>:fr) %></strong></td>
+    <%= Redmine::Hook.call_hook(:plugin_redmine_finance_views_financesheet_deliverable_entry, {:deliverable_entry => deliverable_entry, :precision => @precision }) %>
+  </tr>

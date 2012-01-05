@@ -1,0 +1,43 @@
+<%= error_messages_for 'deliverable' %>
+
+<!--[form:deliverable]-->
+<div class="box tabular">
+<p><%= f.text_field :name, :required => true, :size => 50  %></p>
+<p><%= f.text_area :description,
+				   :required => true,
+                   :cols => 60,
+                   :rows => (@deliverable.description.blank? ? 10 : [[10, @deliverable.description.length / 50].max, 100].min),
+                   :accesskey => accesskey(:edit),
+                   :class => 'wiki-edit' %></p>
+<p><%= f.text_field :amount, :required => false, :size => 10, :label => :label_amount %></p>
+<p><%= f.check_box :ischangable, :disabled => false, :label => :ischangable %></p>
+<p><%= f.text_field :validfrom, :required => true, :size => 10 , :label => :label_validfrom%><%= calendar_for('deliverable_validfrom') %></p>
+<p><%= f.check_box :isactive, :required => true, :disabled => false, :label => :isactive %></p>
+<p></p>
+<fieldset class="box" id="deliverable_trackers"><legend><%=l(:label_tracker_plural)%><span class="required"> *</span></legend>
+<% @trackers.each do |tracker| %>
+    <label class="floating">
+    <%= check_box_tag 'deliverable[tracker_ids][]', tracker.id, @deliverable.trackers.include?(tracker) %>
+    <%= tracker %>
+    </label>
+<% end %>
+<%= hidden_field_tag 'deliverable[tracker_ids][]', '' %>
+</fieldset>
+<p>
+<p></p>
+</div>
+<%= submit_tag l(@deliverable.new_record? ? :button_create : :button_save) %>
+<%= link_to_remote l(:label_preview), 
+       { :url => { :controller => 'deliverables', :action => 'preview'},
+         :method => 'post',
+         :update => 'preview',
+         :with => "Form.serialize('deliverable-form')",
+         :complete => "Element.scrollTo('preview')"
+       }, :accesskey => accesskey(:preview) %>
+</div>
+</p>
+</div>
+<!--[eoform:deliverable]-->
+
+<%= wikitoolbar_for 'deliverable_description' %>
+<div id="preview" class="wiki"></div>
